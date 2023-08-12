@@ -1,0 +1,48 @@
+create database RH;
+
+use RH;
+
+CREATE TABLE employee (
+ id int NOT NULL AUTO_INCREMENT,
+ name varchar(45) NOT NULL,
+ email varchar(45) NOT NULL,
+ PRIMARY KEY (id)
+) ;
+
+CREATE TABLE salary (
+ id int NOT NULL auto_increment primary key,
+ value decimal(10,0) NOT NULL,
+ payment_date date NOT NULL,
+ employee_id int NOT NULL,
+ KEY employee_id (employee_id),
+ CONSTRAINT salary_ibfk_1 FOREIGN KEY (employee_id) REFERENCES employee (id)
+);
+
+
+insert into employee (name, email) values
+("Laura", "l@email.com"),
+("Eduarda", "e@email.com"),
+("Adriano", "a@email.com"),
+("Victor", "v@email.com"),
+("Caio", "c@email.com");
+
+insert into salary (value, payment_date, employee_id) values
+(3530, "2023-3-7", 4), (3530, "2023-4-7", 4), (5050, "2023-5-7", 4), (5050, "2023-6-7", 4), (5050, "2023-7-7", 4), (5050, "2023-8-7", 4),
+(4850, "2023-3-15", 1), (4850, "2023-4-15", 1), (4850, "2023-5-15", 1), (6370, "2023-6-15", 1), (6370, "2023-7-15", 1), (6370, "2023-8-15", 1),
+(5350, "2023-3-5", 3), (5350, "2023-4-5", 3), (5350, "2023-5-5", 3), (5350, "2023-6-5", 3), (5350, "2023-7-5", 3), (5350, "2023-8-5", 3),
+(1320, "2023-3-1", 5), (1320, "2023-4-1", 5), (1320, "2023-5-1", 5), (1320, "2023-6-1", 5), (1320, "2023-7-1", 5), (3530, "2023-8-1", 5),
+(6370, "2023-3-7", 2), (6370, "2023-4-7", 2), (6370, "2023-5-7", 2), (8425, "2023-6-7", 2), (8425, "2023-7-7", 2), (8425, "2023-8-7", 2);
+
+select
+	e.id,
+	e.name as Funcionario,
+    avg(s.value) as Media_Salarial
+from employee as e
+join salary as s on e.id = s.employee_id
+where s.payment_date >= date_sub(curdate(), interval 3 month)
+group by e.id, e.name
+order by Media_Salarial desc
+limit 3;
+
+
+
